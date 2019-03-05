@@ -4,7 +4,9 @@ let postCount = 0;
 let lastThread;
 let data;
 let after;
-request.onload = function loadEm() {
+request.addEventListener('load', loadEm);
+//request.onload = 
+function loadEm() {
     if (request.status >= 200 && request.status < 400) {
         // Success!
         //let data = request.responseText;
@@ -84,25 +86,7 @@ function moreItems() {
     let utl = 'https://api.reddit.com/r/all' + '?count=' +
         countClick + '&after=' + lastThread + '/.json';
     console.log(utl);
-    request.open('GET', utl, true); {
-        if (request.status >= 200 && request.status < 400) {
-            // Success!
-            //let data = request.responseText;
-            renderPosts();
-
-        } else {
-            // We reached our target server, but it returned an error
-            console.log('Server error');
-
-        }
-    };
-
-    request.onerror = function () {
-        // There was a connection error of some sort
-        console.log('Connection error');
-    };
-
-    request.send();
+    loadEm();
 
 }
 
@@ -141,4 +125,15 @@ function reload() {
               document.querySelector('.upvotes').textContent = data.data.children[count].data.ups;
               document.querySelector('.thumbnail').setAttribute('src', data.data.children[count].data.thumbnail)
               document.querySelector('.comments').textContent = data.data.children[count].num_comments; 
-  } */
+  } 
+  
+  
+   console.log('Last Thread is: ' + lastThread);
+   if (lastThread = 'undefined') {
+       url = 'https://api.reddit.com/r/all';
+   } else if (lastThread = !'undefined') {
+       url = 'https://api.reddit.com/r/all' + '?count=' +
+           count + '&after=' + lastThread + '/.json';
+   }
+   console.log('The url is: ' + url);
+  */
