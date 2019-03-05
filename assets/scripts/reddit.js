@@ -1,5 +1,5 @@
 let request = new XMLHttpRequest(); //copy pasted from youmightnotneedjquery.com
-request.open('GET', 'https://api.reddit.com/r/all.json', true);
+request.open('GET', 'https://api.reddit.com/r/all?count=50&after=t3_axjvq0/.json', true);
 let postCount = 0;
 let lastThread;
 let data;
