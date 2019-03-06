@@ -134,4 +134,6 @@ function reload() {
            count + '&after=' + lastThread + '/.json';
    }
    console.log('The url is: ' + url);
+   ?count=25&after=t3_axwzux%2F
+   ?count=25&after=t3_axx1bk
   */
