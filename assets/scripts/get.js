@@ -46,6 +46,8 @@ function renderPosts() {
 let post;
 let title;
 let permalink;
+let details;
+let summary;
 //declare variables in global scope because it's best practice or something lik that:
 function createElement() {
     post = document.createElement('div');
@@ -85,3 +87,12 @@ document.querySelector('#reload').addEventListener('click', reload);
 function reload() {
     window.location.reload(true);
 }
+
+/* 
+IF post is text, then create a <details> tag and fill in with text.
+
+ELSEIF post is a permalink, grab a thumbnail and display it.
+
+if it's a post with an enclosed link, do both
+
+*/
