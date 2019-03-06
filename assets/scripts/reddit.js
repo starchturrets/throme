@@ -55,7 +55,6 @@ function createElement() {
     post = document.createElement('div');
     post.className = 'post';
     post.id = 'post' + postCount;
-    console.log(post.id);
     title = document.createElement('a');
     title.className = 'title';
     title.textContent = 'placeholder title';
@@ -75,16 +74,15 @@ function createButton() {
     document.body.appendChild(button);
 }
 
-let countClick = 25;
+let countClick = 0;
 
 function moreItems() {
     countClick = countClick + 25;
     console.log(lastThread);
-    console.log(countClick);
     /// '?count=' + 'countClick' + '&after= + after';
     request = new XMLHttpRequest(); //copy pasted from youmightnotneedjquery.com
     let utl = 'https://api.reddit.com/r/all' + '?count=' +
-        countClick + '&after=' + lastThread + '/.json';
+        countClick + '&after=' + lastThread;
     console.log(utl);
     loadEm();
 

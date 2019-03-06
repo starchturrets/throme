@@ -1,9 +1,9 @@
 let request;
-let lastThread;
+let after;
 let url;
 let data;
 let count = 0;
-url = 'https://api.reddit.com/r/all'
+url = 'https://api.reddit.com/r/all/'
 document.addEventListener('load', requestData());
 
 function requestData() {
@@ -15,9 +15,9 @@ function requestData() {
         if (request.status >= 200 && request.status < 400) {
             // Success!
             data = JSON.parse(request.responseText);
-            lastThread = data.data.after;
-            console.log('The request url was: ' + url);
-            console.log('The lastThread is:' + lastThread);
+            after = data.data.after;
+            console.log('The requested url was: ' + url);
+            console.log('The after is: ' + after);
             renderPosts();
 
         } else {
@@ -35,10 +35,10 @@ function requestData() {
 }
 
 function renderPosts() {
-    console.log(data);
-    /* for (postCount = 0; postCount < data.data.children.length; postCount++) {
-         createElement();
-     } */
+    // console.log(data);
+    for (postCount = 0; postCount < data.data.children.length; postCount++) {
+        createElement();
+    }
     createButton();
 }
 
@@ -73,8 +73,9 @@ function createButton() {
 function loadMore() {
     count = count + 25;
     url = 'https://api.reddit.com/r/all' + '?count=' +
-        count + '&after=' + lastThread + '/.json';
+        count + '&after=' + after;
     console.log(url);
+    document.body.removeChild(document.querySelector('.loadMore'));
     requestData();
 }
 
