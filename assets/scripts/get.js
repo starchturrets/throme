@@ -61,11 +61,16 @@ function createElement() {
     title.textContent = data.data.children[postCount].data.title;
     let link = 'https://i.reddit.com' + data.data.children[postCount].data.permalink;
     title.setAttribute('href', link);
+    let thumbnail = document.createElement('img');
+    let src = data.data.children[postCount].data.thumbnail;
+    thumbnail.setAttribute('src', src);
+    thumbnail.setAttribute('alt', 'No Thumbnail');
+    //  post.appendChild(thumbnail);
     //  permalink.setAttribute('href')
-    console.log(data.data.children[postCount].data.thumbnail);
-    if (data.data.children[postCount].data.thumbnail = 'self') {
-        console.log('There is no thumbnail');
-    }
+    // console.log(data.data.children[postCount].data.thumbnail);
+    // if (data.data.children[postCount].data.thumbnail = 'self') {
+    // console.log('There is no thumbnail');
+    // }
     document.body.appendChild(post);
 }
 
@@ -83,8 +88,8 @@ function loadMore() {
     url = 'https://api.reddit.com/r/all' + '?count=' +
         count + '&after=' + after;
     console.log(url);
+    document.body.appendChild(document.createTextNode('PAGE ' + pageCount));
     document.body.removeChild(document.querySelector('.loadMore'));
-    document.body.appendChild(document.createTextNode('page ' + pageCount));
     requestData();
 }
 

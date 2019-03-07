@@ -14,7 +14,7 @@ body {
 }
 
 .post {
-    max-width: 75%;
+    max-width: 90%;
     margin: 1rem auto;
     border-style: solid;
     padding: 1rem;
@@ -44,9 +44,9 @@ button {
 }
 
 .post>img {
-    max-width: 6rem;
+    max-width: auto;
     max-height: auto;
-    border-radius: 2%;
+    border-radius: 3px;
     float: right;
 }
 
