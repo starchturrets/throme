@@ -49,23 +49,18 @@ let title;
 let permalink;
 let details;
 let summary;
-//declare variables in global scope because it's best practice or something lik that:
+//declare variables in global scope because it's best practice or something like that:
 function createElement() {
     post = document.createElement('div');
     post.className = 'post';
     post.id = 'post' + postCount;
-    title = document.createElement('a');
-    title.className = 'title';
-    title.textContent = 'placeholder title';
-    post.appendChild(title);
-    title.textContent = data.data.children[postCount].data.title;
-    let link = 'https://i.reddit.com' + data.data.children[postCount].data.permalink;
-    title.setAttribute('href', link);
-    let thumbnail = document.createElement('img');
-    let src = data.data.children[postCount].data.thumbnail;
-    thumbnail.setAttribute('src', src);
-    thumbnail.setAttribute('alt', 'No Thumbnail');
-    //  post.appendChild(thumbnail);
+    createTitle();
+    if (data.data.children[postCount].data.thumbnail === 'self') {
+        console.log('No thumbnail.');
+    } else {
+        createThumbnail();
+    }
+
     //  permalink.setAttribute('href')
     // console.log(data.data.children[postCount].data.thumbnail);
     // if (data.data.children[postCount].data.thumbnail = 'self') {
@@ -73,6 +68,42 @@ function createElement() {
     // }
     document.body.appendChild(post);
 }
+
+function createTitle() {
+    title = document.createElement('a');
+    title.className = 'title';
+    post.appendChild(title);
+    title.textContent = data.data.children[postCount].data.title;
+    let link = 'https://i.reddit.com' + data.data.children[postCount].data.permalink;
+    title.setAttribute('href', link);
+}
+
+function createThumbnail() {
+    let thumbnail = document.createElement('img');
+    thumbnail.className = 'thumbnail';
+    let src = data.data.children[postCount].data.thumbnail;
+    thumbnail.setAttribute('src', src);
+    src = document.createElement('a');
+    src.setAttribute('href', data.data.children[postCount].data.url);
+    src.setAttribute('target', '_blank');
+    thumbnail.setAttribute('alt', 'Thumbnail');
+    src.appendChild(thumbnail);
+    post.appendChild(src);
+}
+
+function displaySubreddit() {}
+
+function displayAge() {}
+
+function displayPoster() {}
+
+
+function displayKarma() {}
+
+function displayComments() {}
+
+function displayDomain() {}
+
 
 function createButton() {
     let button = document.createElement('button');

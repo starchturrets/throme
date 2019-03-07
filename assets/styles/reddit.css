@@ -14,10 +14,16 @@ body {
 }
 
 .post {
-    max-width: 90%;
+    max-width: 75%;
     margin: 1rem auto;
     border-style: solid;
     padding: 1rem;
+    border-radius: 4px;
+    display: grid;
+    grid-template-columns: auto auto auto auto auto;
+    grid-column-gap: 1rem;
+    grid-row-gap: 0.1rem;
+
 }
 
 .post>div,
@@ -43,22 +49,32 @@ button {
     text-decoration: underline;
 }
 
-.post>img {
-    max-width: auto;
+.thumbnail {
+    border-radius: 5px;
+    max-width: 6.9rem;
     max-height: auto;
-    border-radius: 3px;
-    float: right;
+    margin: 0;
+    padding: 0;
+    grid-column: 5/span 2;
 }
 
-.title {}
+.title {
+    font-size: 1.69rem;
+    font-weight: bold;
+    grid-column: 1/span 3;
+}
 
 .domain {}
 
-.subreddit {}
+.subreddit {
+    color: inherit;
+}
 
 .upvotes {}
 
-.comments {}
+.comments {
+    color: inherit;
+}
 
 .time {}
 
