@@ -76,6 +76,7 @@ function createTitle() {
     title.textContent = data.data.children[postCount].data.title;
     let link = 'https://i.reddit.com' + data.data.children[postCount].data.permalink;
     title.setAttribute('href', link);
+    title.setAttribute('target', '_blank');
 }
 
 function createThumbnail() {
