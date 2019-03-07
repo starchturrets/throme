@@ -14,7 +14,7 @@ body {
 }
 
 .post {
-    max-width: 75%;
+    max-width: 80%;
     margin: 1rem auto;
     border-style: solid;
     padding: 1rem;
@@ -59,7 +59,7 @@ button {
 }
 
 .title {
-    font-size: 1.69rem;
+    font-size: 1.2rem;
     font-weight: bold;
     grid-column: 1/span 3;
 }
