@@ -3,6 +3,7 @@ let after;
 let url;
 let data;
 let count = 0;
+let pageCount = 1;
 url = 'https://api.reddit.com/r/all/'
 document.addEventListener('load', requestData());
 
@@ -58,9 +59,13 @@ function createElement() {
     title.textContent = 'placeholder title';
     post.appendChild(title);
     title.textContent = data.data.children[postCount].data.title;
-    let link = 'https://reddit.com' + data.data.children[postCount].data.permalink + '/.mobile?keep_extension=True';
+    let link = 'https://i.reddit.com' + data.data.children[postCount].data.permalink;
     title.setAttribute('href', link);
     //  permalink.setAttribute('href')
+    console.log(data.data.children[postCount].data.thumbnail);
+    if (data.data.children[postCount].data.thumbnail = 'self') {
+        console.log('There is no thumbnail');
+    }
     document.body.appendChild(post);
 }
 
@@ -74,10 +79,12 @@ function createButton() {
 
 function loadMore() {
     count = count + 25;
+    pageCount++;
     url = 'https://api.reddit.com/r/all' + '?count=' +
         count + '&after=' + after;
     console.log(url);
     document.body.removeChild(document.querySelector('.loadMore'));
+    document.body.appendChild(document.createTextNode('page ' + pageCount));
     requestData();
 }
 

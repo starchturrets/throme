@@ -43,6 +43,13 @@ button {
     text-decoration: underline;
 }
 
+.post>img {
+    max-width: 6rem;
+    max-height: auto;
+    border-radius: 2%;
+    float: right;
+}
+
 .title {}
 
 .domain {}
