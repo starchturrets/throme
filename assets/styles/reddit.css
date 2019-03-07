@@ -58,15 +58,7 @@ button {
     grid-column: 5/span 2;
 }
 
-@media only screen and (min-width: 480px) {
-    .title {
-        font-size: 1.69rem;
-    }
 
-    .thumbnail {
-        max-width: 6.9rem;
-    }
-}
 
 .title {
     font-size: 0.69rem;
@@ -92,4 +84,14 @@ button {
 
 .loadmore {
     display: block;
+}
+
+@media only screen and (min-width: 480px) {
+    .title {
+        font-size: 1.69rem;
+    }
+
+    .thumbnail {
+        max-width: 6.9rem;
+    }
 }

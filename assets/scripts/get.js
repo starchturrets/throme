@@ -57,7 +57,7 @@ function createElement() {
     createTitle();
     if (data.data.children[postCount].data.thumbnail === 'self') {
         console.log('No thumbnail.');
-    } else {
+    } else if (data.data.children[postCount].data.thumbnail === 'null') {} else {
         createThumbnail();
     }
 
