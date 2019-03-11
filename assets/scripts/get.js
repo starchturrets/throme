@@ -55,11 +55,9 @@ function createElement() {
     post.className = 'post';
     post.id = 'post' + postCount;
     createTitle();
-    if (data.data.children[postCount].data.thumbnail === 'self') {
-        console.log('No thumbnail.');
-    } else if (data.data.children[postCount].data.thumbnail === 'null') {} else {
-        createThumbnail();
-    }
+    //  console.log(data.data.children[postCount].data.thumbnail);
+    checkForThumbnail();
+
 
     //  permalink.setAttribute('href')
     // console.log(data.data.children[postCount].data.thumbnail);
@@ -67,6 +65,24 @@ function createElement() {
     // console.log('There is no thumbnail');
     // }
     document.body.appendChild(post);
+}
+
+function checkForThumbnail() {
+    let thumbNailValue = data.data.children[postCount].data.thumbnail;
+
+    if (thumbNailValue === 'self') {
+        // console.log('No thumbnail.');
+    } else if (thumbNailValue === 'image') {
+        // console.log('Thumbnail unavailable.');
+
+    } else if (thumbNailValue === 'default') {
+        //WTF does default mean?
+    } else if (thumbNailValue === 'spoiler') {
+
+    } else if (thumbNailValue === 'nsfw') {} else {
+        createThumbnail();
+    }
+
 }
 
 function createTitle() {
