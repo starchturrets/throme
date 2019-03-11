@@ -5,7 +5,14 @@ let data;
 let count = 0;
 let pageCount = 1;
 url = 'https://api.reddit.com/r/all/'
-document.addEventListener('load', requestData());
+//document.addEventListener('load', requestData());
+var x = myFunction(4, 3); // Function is called, return value will end up in x
+
+function myFunction(a, b) {
+    return a * b; // Function returns the product of a and b
+}
+console.log(x); //Some random code I pasted in from w3Schools because I barely understand functions as it is.
+window.onload = requestData();
 
 function requestData() {
     request = new XMLHttpRequest();
@@ -17,8 +24,8 @@ function requestData() {
             // Success!
             data = JSON.parse(request.responseText);
             after = data.data.after;
-            console.log('The requested url was: ' + url);
-            console.log('The after is: ' + after);
+            // console.log('The requested url was: ' + url);
+            // console.log('The after is: ' + after);
             renderItems();
 
         } else {
@@ -49,6 +56,7 @@ let title;
 let permalink;
 let details;
 let summary;
+let thumbNailValue;
 //declare variables in global scope because it's best practice or something like that:
 function createPost() {
     createContainer();
@@ -70,10 +78,11 @@ function createContainer() {
     container.className = 'post';
     container.id = 'post' + postCount;
     createTitle();
+    displayAge();
 }
 
 function checkForThumbnail() {
-    let thumbNailValue = data.data.children[postCount].data.thumbnail;
+    thumbNailValue = data.data.children[postCount].data.thumbnail;
 
     if (thumbNailValue === 'self') {
         // console.log('No thumbnail.');
@@ -91,19 +100,25 @@ function checkForThumbnail() {
 }
 
 function createTitle() {
+    createHeader();
     title = document.createElement('a');
     title.className = 'title';
     container.appendChild(title);
+    populateTitle();
+}
+
+function populateTitle() {
     title.textContent = data.data.children[postCount].data.title;
     let link = 'https://i.reddit.com' + data.data.children[postCount].data.permalink;
     title.setAttribute('href', link);
     title.setAttribute('target', '_blank');
 }
 
+
 function createThumbnail() {
     let thumbnail = document.createElement('img');
     thumbnail.className = 'thumbnail';
-    let src = data.data.children[postCount].data.thumbnail;
+    let src = thumbNailValue;
     thumbnail.setAttribute('src', src);
     src = document.createElement('a');
     src.setAttribute('href', data.data.children[postCount].data.url);
@@ -112,10 +127,17 @@ function createThumbnail() {
     src.appendChild(thumbnail);
     container.appendChild(src);
 }
+let subreddit;
 
 function displaySubreddit() {}
+let Age;
 
-function displayAge() {}
+function createHeader() {}
+
+function displayAge() {
+    age = data.data.children[postCount].data.created;
+    console.log(age);
+}
 
 function displaycontainerer() {}
 
@@ -140,7 +162,7 @@ function loadMore() {
     pageCount++;
     url = 'https://api.reddit.com/r/all' + '?count=' +
         count + '&after=' + after;
-    console.log(url);
+    //console.log(url);
     document.body.appendChild(document.createTextNode('PAGE ' + pageCount));
     document.body.removeChild(document.querySelector('.loadMore'));
     requestData();
