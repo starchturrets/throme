@@ -19,7 +19,7 @@ function requestData() {
             after = data.data.after;
             console.log('The requested url was: ' + url);
             console.log('The after is: ' + after);
-            renderPosts();
+            renderItems();
 
         } else {
             // We reached our target server, but it returned an error
@@ -35,26 +35,24 @@ function requestData() {
     request.send();
 }
 
-function renderPosts() {
+function renderItems() {
     // console.log(data);
     for (postCount = 0; postCount < data.data.children.length; postCount++) {
-        createElement();
+        createPost();
     }
     createButton();
 }
 
 
-let post;
+let container;
 let title;
 let permalink;
 let details;
 let summary;
 //declare variables in global scope because it's best practice or something like that:
-function createElement() {
-    post = document.createElement('div');
-    post.className = 'post';
-    post.id = 'post' + postCount;
-    createTitle();
+function createPost() {
+    createContainer();
+
     //  console.log(data.data.children[postCount].data.thumbnail);
     checkForThumbnail();
 
@@ -64,7 +62,14 @@ function createElement() {
     // if (data.data.children[postCount].data.thumbnail = 'self') {
     // console.log('There is no thumbnail');
     // }
-    document.body.appendChild(post);
+    document.body.appendChild(container);
+}
+
+function createContainer() {
+    container = document.createElement('div');
+    container.className = 'post';
+    container.id = 'post' + postCount;
+    createTitle();
 }
 
 function checkForThumbnail() {
@@ -88,7 +93,7 @@ function checkForThumbnail() {
 function createTitle() {
     title = document.createElement('a');
     title.className = 'title';
-    post.appendChild(title);
+    container.appendChild(title);
     title.textContent = data.data.children[postCount].data.title;
     let link = 'https://i.reddit.com' + data.data.children[postCount].data.permalink;
     title.setAttribute('href', link);
@@ -105,14 +110,14 @@ function createThumbnail() {
     src.setAttribute('target', '_blank');
     thumbnail.setAttribute('alt', 'Thumbnail');
     src.appendChild(thumbnail);
-    post.appendChild(src);
+    container.appendChild(src);
 }
 
 function displaySubreddit() {}
 
 function displayAge() {}
 
-function displayPoster() {}
+function displaycontainerer() {}
 
 
 function displayKarma() {}
@@ -149,10 +154,10 @@ function reload() {
 }
 
 /* 
-IF post is text, then create a <details> tag and fill in with text.
+IF container is text, then create a <details> tag and fill in with text.
 
-ELSEIF post is a permalink, grab a thumbnail and display it.
+ELSEIF container is a permalink, grab a thumbnail and display it.
 
-if it's a post with an enclosed link, do both
+if it's a container with an enclosed link, do both
 
 */
