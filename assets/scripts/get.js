@@ -4,6 +4,7 @@ let url;
 let data;
 let count = 0;
 let pageCount = 1;
+let main;
 url = 'https://api.reddit.com/r/all/'
 //document.addEventListener('load', requestData());
 var x = myFunction(4, 3); // Function is called, return value will end up in x
@@ -11,7 +12,7 @@ var x = myFunction(4, 3); // Function is called, return value will end up in x
 function myFunction(a, b) {
     return a * b; // Function returns the product of a and b
 }
-console.log(x); //Some random code I pasted in from w3Schools because I barely understand functions as it is.
+//console.log(x); //Some random code I pasted in from w3Schools because I barely understand functions as it is.
 window.onload = requestData();
 
 function requestData() {
@@ -26,6 +27,8 @@ function requestData() {
             after = data.data.after;
             // console.log('The requested url was: ' + url);
             // console.log('The after is: ' + after);
+            createMain();
+
             renderItems();
 
         } else {
@@ -43,12 +46,20 @@ function requestData() {
 }
 
 function renderItems() {
+
     // console.log(data);
     for (postCount = 0; postCount < data.data.children.length; postCount++) {
         createPost();
     }
     createButton();
 }
+
+function createMain() {
+    main = document.createElement('main'); //Remember the Maine!
+    document.body.appendChild(main);
+}
+
+
 
 
 let container;
@@ -57,20 +68,12 @@ let permalink;
 let details;
 let summary;
 let thumbNailValue;
+
 //declare variables in global scope because it's best practice or something like that:
 function createPost() {
     createContainer();
-
-    //  console.log(data.data.children[postCount].data.thumbnail);
     checkForThumbnail();
-
-
-    //  permalink.setAttribute('href')
-    // console.log(data.data.children[postCount].data.thumbnail);
-    // if (data.data.children[postCount].data.thumbnail = 'self') {
-    // console.log('There is no thumbnail');
-    // }
-    document.body.appendChild(container);
+    main.appendChild(container);
 }
 
 function createContainer() {
@@ -83,17 +86,7 @@ function createContainer() {
 
 function checkForThumbnail() {
     thumbNailValue = data.data.children[postCount].data.thumbnail;
-
-    if (thumbNailValue === 'self') {
-        // console.log('No thumbnail.');
-    } else if (thumbNailValue === 'image') {
-        // console.log('Thumbnail unavailable.');
-
-    } else if (thumbNailValue === 'default') {
-        //WTF does default mean?
-    } else if (thumbNailValue === 'spoiler') {
-
-    } else if (thumbNailValue === 'nsfw') {} else {
+    if (thumbNailValue !== 'self' && thumbNailValue !== 'image' && thumbNailValue !== 'default' && thumbNailValue !== 'spoiler' && thumbNailValue !== 'nsfw') {
         createThumbnail();
     }
 
@@ -136,7 +129,7 @@ function createHeader() {}
 
 function displayAge() {
     age = data.data.children[postCount].data.created;
-    console.log(age);
+    // console.log(age);
 }
 
 function displaycontainerer() {}
