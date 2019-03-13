@@ -82,8 +82,9 @@ button {
 
 .permalink {}
 
-.loadmore {
+.loadMore {
     display: block;
+    margin: 1rem auto 5rem auto;
 }
 
 #bottom_Nav_Bar {
@@ -96,6 +97,8 @@ button {
 
 
 }
+
+
 
 @media only screen and (min-width: 480px) {
     .title {
