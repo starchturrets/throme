@@ -6,39 +6,26 @@ let count = 0;
 let pageCount = 1;
 let main;
 url = 'https://api.reddit.com/r/all/'
-//document.addEventListener('load', requestData());
-var x = myFunction(4, 3); // Function is called, return value will end up in x
-
-function myFunction(a, b) {
-    return a * b; // Function returns the product of a and b
-}
-//console.log(x); //Some random code I pasted in from w3Schools because I barely understand functions as it is.
-window.onload = requestData();
+self.fetch = requestData();
 
 function requestData() {
     request = new XMLHttpRequest();
     request.open('GET', url, true);
     request.addEventListener('load', getJSON);
 
+
     function getJSON() {
         if (request.status >= 200 && request.status < 400) {
-            // Success!
             data = JSON.parse(request.responseText);
             after = data.data.after;
-            // console.log('The requested url was: ' + url);
-            // console.log('The after is: ' + after);
-            createMain();
-
             renderItems();
 
         } else {
-            // We reached our target server, but it returned an error
             console.log('Server Error');
         }
     };
 
     request.onerror = function () {
-        // There was a connection error of some sort
         console.log('Connection Error');
     };
 
@@ -47,17 +34,14 @@ function requestData() {
 
 function renderItems() {
 
-    // console.log(data);
+
     for (postCount = 0; postCount < data.data.children.length; postCount++) {
         createPost();
     }
     createButton();
 }
 
-function createMain() {
-    main = document.createElement('main'); //Remember the Maine!
-    document.body.appendChild(main);
-}
+
 
 
 
@@ -73,7 +57,7 @@ let thumbNailValue;
 function createPost() {
     createContainer();
     checkForThumbnail();
-    main.appendChild(container);
+    document.body.appendChild(container);
 }
 
 function createContainer() {
@@ -129,7 +113,6 @@ function createHeader() {}
 
 function displayAge() {
     age = data.data.children[postCount].data.created;
-    // console.log(age);
 }
 
 function displaycontainerer() {}
@@ -155,7 +138,6 @@ function loadMore() {
     pageCount++;
     url = 'https://api.reddit.com/r/all' + '?count=' +
         count + '&after=' + after;
-    //console.log(url);
     document.body.appendChild(document.createTextNode('PAGE ' + pageCount));
     document.body.removeChild(document.querySelector('.loadMore'));
     requestData();
@@ -167,12 +149,3 @@ document.querySelector('#reload').addEventListener('click', reload);
 function reload() {
     window.location.reload(true);
 }
-
-/* 
-IF container is text, then create a <details> tag and fill in with text.
-
-ELSEIF container is a permalink, grab a thumbnail and display it.
-
-if it's a container with an enclosed link, do both
-
-*/
