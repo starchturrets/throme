@@ -149,24 +149,3 @@ document.querySelector('#reload').addEventListener('click', reload);
 function reload() {
     window.location.reload(true);
 }
-//Copy pasted from google. Note to self: find out what on earth promises are.
-/*if ('serviceWorker' in navigator) {
-    window.addEventListener('load', function () {
-        navigator.serviceWorker.register('assets/scripts/serviceworker.js').then(function (registration) {
-            // Registration was successful
-            console.log('ServiceWorker registration successful with scope: ', registration.scope);
-        }, function (err) {
-            // registration failed :(
-            console.log('ServiceWorker registration failed: ', err);
-        });
-    });
-} */
-if (navigator.serviceWorker) {
-    navigator.serviceWorker.register('/sw.js')
-        .then(registration => {
-            console.log('congrats. scope is: ', registration.scope);
-        })
-        .catch(error => {
-            console.log('sorry', error);
-        });
-}
