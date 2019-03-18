@@ -33,7 +33,7 @@ function create_post(json, post_count) {
 function create_element(json, post_count) {
     let post_element = document.createElement('div');
     post_element.className = 'post';
-    post_element.id = 'post#' + post_count;
+    post_element.id = 'post_' + post_count;
     document.body.appendChild(post_element);
     return post_element;
 }
