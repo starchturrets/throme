@@ -48,6 +48,7 @@ function permalink(json, post_count) {
 
 function create_thumbnail(json, post_count, thumb_nail_value, post_element) {
     if (thumb_nail_value !== 'self' && thumb_nail_value !== 'image' && thumb_nail_value !== 'default' && thumb_nail_value !== 'spoiler' && thumb_nail_value !== 'nsfw') {
+        let thumbnail_img.className = thumbnail;
         let thumbnail_link = document.createElement('a');
         thumbnail_link.href = json.data.children[post_count].data.url;
         let thumbnail_img = document.createElement('img');
