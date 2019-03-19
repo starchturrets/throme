@@ -1,0 +1,51 @@
+ * {
+     box-sizing: border-box;
+ }
+
+ html {
+     font-family: sans-serif;
+
+ }
+
+ body {
+     font-size: 169%;
+     margin: 0;
+     padding: 0;
+     height: 100vh;
+     background: linear-gradient(to left, #B24592, #F15F79);
+ }
+
+ main {
+     width: 35vw;
+     height: 69vh;
+     margin: 69px auto;
+     background: linear-gradient(to left, #C6D4FF, #B2C3F4);
+     border-radius: 5px;
+     box-shadow: 6.9px 6.9px rgb(23, 13, 26);
+ }
+
+ h2 {
+     margin: 2rem auto auto 1.4rem;
+     padding-top: 2rem;
+ }
+
+ #text {
+     border-radius: 4px;
+     border-style: inherit;
+     background-color: inherit;
+     color: inherit;
+     font-size: 100%;
+     margin: 1em 1em;
+     max-width: 90%;
+     outline: none;
+ }
+
+ form {
+     max-width: 90%;
+ }
+
+
+
+
+ /*background-color: #9A98B5;
+ color: #A5F8D3;*/

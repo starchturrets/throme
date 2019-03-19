@@ -1,5 +1,6 @@
 * {
     box-sizing: border-box;
+    scroll-behavior: smooth;
 }
 
 html {}
@@ -49,6 +50,32 @@ button {
     text-decoration: underline;
 }
 
+#settings {
+    float: left;
+}
+
+details {
+    border: 1px solid #aaa;
+    border-radius: 4px;
+    padding: .5em .5em 0;
+}
+
+summary {
+    font-weight: bold;
+    margin: -.5em -.5em 0;
+    padding: .5em;
+}
+
+details[open] {
+    padding: .5em;
+}
+
+details[open] summary {
+    border-bottom: 1px solid #aaa;
+    margin-bottom: .5em;
+}
+
+
 .thumbnail {
     border-radius: 5px;
     max-width: 5.5rem;
@@ -87,16 +114,17 @@ button {
     margin: 1rem auto 5rem auto;
 }
 
-#bottom_Nav_Bar {
+#nav_bar {
     position: fixed;
     bottom: 93%;
     right: 0;
     left: 0;
     top: 0;
     background-color: #44475a;
+    display: flex;
 }
 
-#post_0 {
+#feed {
     margin-top: 6.9rem;
 }
 

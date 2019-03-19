@@ -8,6 +8,8 @@ fetch(url)
     .then(data => render_feed(data));
 let post_count;
 let after;
+let feed = document.querySelector('#feed');
+
 
 function render_feed(json) {
     let children_length = json.data.children.length;
@@ -17,8 +19,6 @@ function render_feed(json) {
     after = json.data.after;
     append_button(after);
 }
-
-
 
 function create_post(json, post_count) {
     let post_element = create_element(json, post_count);
@@ -34,7 +34,7 @@ function create_element(json, post_count) {
     let post_element = document.createElement('div');
     post_element.className = 'post';
     post_element.id = 'post_' + post_count;
-    document.body.appendChild(post_element);
+    feed.appendChild(post_element);
     return post_element;
 }
 
@@ -53,6 +53,7 @@ function create_thumbnail(json, post_count, thumb_nail_value, post_element) {
         let thumbnail_img = document.createElement('img');
         thumbnail_img.src = thumb_nail_value;
         thumbnail_link.className = 'thumbnail_link';
+        thumbnail_link.setAttribute('target', '_blank');
         thumbnail_img.className = 'thumbnail';
         thumbnail_link.appendChild(thumbnail_img);
         post_element.appendChild(thumbnail_link);
@@ -66,7 +67,7 @@ function append_button(after) {
     button.addEventListener('click', function () {
         load_more(after, button)
     });
-    document.body.appendChild(button);
+    feed.appendChild(button);
 }
 
 function test() {
@@ -78,14 +79,16 @@ function load_more(after, button) {
     page_count++;
     url = 'https://api.reddit.com/r/all' + '?count=' +
         count + '&after=' + after;
-    document.body.appendChild(document.createTextNode('PAGE ' + page_count));
+    let page_indicator = document.createElement('div');
+    page_indicator.textContent = ('PAGE ' + page_count);
+    page_indicator.id = 'page' + page_count;
+    feed.appendChild(page_indicator);
     // document.body.removeChild(document.querySelector('.loadMore'));
     fetch(url)
         .then((resp) => resp.json()) // Jesus Christ, it's Json Bourne!
         .then(data => render_feed(data));
-    document.body.removeChild(button);
+    feed.removeChild(button);
 }
-document.querySelector('#reload').addEventListener('click', reload);
 
 function reload() {
     window.location.reload(true);
