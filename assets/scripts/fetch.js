@@ -30,6 +30,8 @@ function create_post(json, post_count) {
 
 }
 
+
+
 function create_element(json, post_count) {
     let post_element = document.createElement('div');
     post_element.className = 'post';
@@ -40,9 +42,12 @@ function create_element(json, post_count) {
 
 function permalink(json, post_count) {
     let title = document.createElement('a');
-    title.href = 'https://i.reddit.com' + json.data.children[post_count].data.permalink;
+    let permalink = json.data.children[post_count].data.permalink;
+    title.href = permalink;
+    title.addEventListener('click', function () {
+        display_post(permalink)
+    });
     title.textContent = json.data.children[post_count].data.title;
-    title.setAttribute('target', '_blank');
     return title;
 }
 
@@ -89,7 +94,18 @@ function load_more(after, button) {
         .then(data => render_feed(data));
     feed.removeChild(button);
 }
+let post_modal;
 
-function reload() {
-    window.location.reload(true);
+function display_post(permalink) {
+    post_modal = document.createElement('div');
+    post_modal.className = 'post_modal';
+    document.body.appendChild(post_modal);
+    fetch('https://api.reddit.com/' + permalink)
+        .then((resp) => resp.json()) // Jesus Christ, it's Json Bourne!
+        .then(data => export_data(data));
+
+}
+
+function export_data(data) {
+    console.log(data);
 }
