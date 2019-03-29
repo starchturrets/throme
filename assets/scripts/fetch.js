@@ -42,11 +42,9 @@ function create_element(json, post_count) {
 
 function permalink(json, post_count) {
     let title = document.createElement('a');
-    let permalink = json.data.children[post_count].data.permalink;
-    title.href = 'https:i.reddit.com' + permalink;
-    title.addEventListener('click', function () {
-        display_post(permalink)
-    });
+    let permalink = 'https://i.reddit.com' + json.data.children[post_count].data.permalink;
+    title.setAttribute('href', permalink);
+    title.setAttribute('target', '_blank');
     title.textContent = json.data.children[post_count].data.title;
     return title;
 }
