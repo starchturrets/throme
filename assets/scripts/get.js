@@ -14,7 +14,7 @@ const renderFeed = (json) => {
             postMarkup = `
         <div class="post">
         <a target = "_blank" href = "https://i.reddit.com${json.data.children[count].data.permalink}">${json.data.children[count].data.title}</a> 
-        <a href=${json.data.children[count].data.url} target="blank"><img alt="thumbnail" src="${json.data.children[count].data.thumbnail}"</a>
+        <a href=${json.data.children[count].data.url} target="blank"><img alt="thumbnail" class="thumbnail" src="${json.data.children[count].data.thumbnail}"</a>
         </div>
         `
         } else {
