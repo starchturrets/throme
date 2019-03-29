@@ -1,151 +1,53 @@
-let request;
-let after;
-let url;
-let data;
-let count = 0;
+"use strict";
 let pageCount = 1;
-let main;
-url = 'https://api.reddit.com/r/all/'
-self.fetch = requestData();
-
-function requestData() {
-    request = new XMLHttpRequest();
-    request.open('GET', url, true);
-    request.addEventListener('load', getJSON);
-
-
-    function getJSON() {
-        if (request.status >= 200 && request.status < 400) {
-            data = JSON.parse(request.responseText);
-            after = data.data.after;
-            renderItems();
-
+window.onload = fetch('https://api.reddit.com/r/all/.json')
+    .then((resp) => resp.json()) // Jesus Christ, it's Json Bourne!
+    .then(data => renderFeed(data));
+let postCount;
+let after;
+const feed = document.querySelector('#feed');
+const renderFeed = (json) => {
+    for (let count = 0; count < json.data.children.length; count++) {
+        let thumbNail = json.data.children[count].data.thumbnail;
+        let postMarkup;
+        if (thumbNail !== 'self' && thumbNail !== 'image' && thumbNail !== 'default' && thumbNail !== 'spoiler' && thumbNail !== 'nsfw') { //post with thumbnail
+            postMarkup = `
+        <div class="post">
+        <a target = "_blank" href = "https://i.reddit.com${json.data.children[count].data.permalink}">${json.data.children[count].data.title}</a> 
+        <a href=${json.data.children[count].data.url} target="blank"><img alt="thumbnail" src="${json.data.children[count].data.thumbnail}"</a>
+        </div>
+        `
         } else {
-            console.log('Server Error');
+            postMarkup = `
+        <div class="post">
+        <a target = "_blank" href = "https://i.reddit.com${json.data.children[count].data.permalink}"> ${json.data.children[count].data.title}</a> 
+        </div>`
         }
-    };
-
-    request.onerror = function () {
-        console.log('Connection Error');
-    };
-
-    request.send();
-}
-
-function renderItems() {
-
-
-    for (postCount = 0; postCount < data.data.children.length; postCount++) {
-        createPost();
+        feed.innerHTML += postMarkup;
     }
-    createButton();
+    after = json.data.after;
+    console.log(after);
+    addButton();
 }
-
-
-
-
-
-
-let container;
-let title;
-let permalink;
-let details;
-let summary;
-let thumbNailValue;
-
-//declare variables in global scope because it's best practice or something like that:
-function createPost() {
-    createContainer();
-    checkForThumbnail();
-    document.body.appendChild(container);
-}
-
-function createContainer() {
-    container = document.createElement('div');
-    container.className = 'post';
-    container.id = 'post' + postCount;
-    createTitle();
-    displayAge();
-}
-
-function checkForThumbnail() {
-    thumbNailValue = data.data.children[postCount].data.thumbnail;
-    if (thumbNailValue !== 'self' && thumbNailValue !== 'image' && thumbNailValue !== 'default' && thumbNailValue !== 'spoiler' && thumbNailValue !== 'nsfw') {
-        createThumbnail();
+let count = 0;
+const addButton = () => { //Arrow functions are fun!
+    if (pageCount > 1) {
+        feed.removeChild(document.querySelector('.loadMore'));
     }
-
-}
-
-function createTitle() {
-    createHeader();
-    title = document.createElement('a');
-    title.className = 'title';
-    container.appendChild(title);
-    populateTitle();
-}
-
-function populateTitle() {
-    title.textContent = data.data.children[postCount].data.title;
-    let link = 'https://i.reddit.com' + data.data.children[postCount].data.permalink;
-    title.setAttribute('href', link);
-    title.setAttribute('target', '_blank');
-}
-
-
-function createThumbnail() {
-    let thumbnail = document.createElement('img');
-    thumbnail.className = 'thumbnail';
-    let src = thumbNailValue;
-    thumbnail.setAttribute('src', src);
-    src = document.createElement('a');
-    src.setAttribute('href', data.data.children[postCount].data.url);
-    src.setAttribute('target', '_blank');
-    thumbnail.setAttribute('alt', 'Thumbnail');
-    src.appendChild(thumbnail);
-    container.appendChild(src);
-}
-let subreddit;
-
-function displaySubreddit() {}
-let Age;
-
-function createHeader() {}
-
-function displayAge() {
-    age = data.data.children[postCount].data.created;
-}
-
-function displaycontainerer() {}
-
-
-function displayKarma() {}
-
-function displayComments() {}
-
-function displayDomain() {}
-
-
-function createButton() {
     let button = document.createElement('button');
-    button.textContent = 'Load More';
     button.className = 'loadMore';
+    button.textContent = 'Load More';
     button.addEventListener('click', loadMore);
-    document.body.appendChild(button);
+    feed.appendChild(button);
 }
 
-function loadMore() {
-    count = count + 25;
+const loadMore = () => {
     pageCount++;
-    url = 'https://api.reddit.com/r/all' + '?count=' +
-        count + '&after=' + after;
-    document.body.appendChild(document.createTextNode('PAGE ' + pageCount));
-    document.body.removeChild(document.querySelector('.loadMore'));
-    requestData();
+    count += 25;
+    let url = `https://api.reddit.com/r/all?count=+${count}'&after=${after}`
+    console.log(url);
+    fetch(url)
+        .then((resp) => resp.json()) // Jesus Christ, it's Json Bourne!
+        .then(data => renderFeed(data));
 }
-
-
-document.querySelector('#reload').addEventListener('click', reload);
-
-function reload() {
-    window.location.reload(true);
-}
+//Plans: first, use the fetch API w/ arrow functions. Then, use a combination of ES6 Template Literals, += .innerHTML, and some CSS, to add new feed items. Add a button at the bottom to load more feed items. On click, change it to a pagecount indicator and add another button on the bottom. Figure out routing and SPA functionality later.
