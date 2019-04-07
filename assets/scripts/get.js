@@ -1,86 +1,84 @@
 "use strict";
-let pageCount = 1;
-fetch('https://api.reddit.com/r/all/.json')
-    .then((resp) => resp.json()) // Jesus Christ, it's Json Bourne!
-    .then(data => renderFeed(data));
-let postCount;
-let after;
-const feed = document.querySelector('#feed');
-const renderFeed = (json) => {
-    console.log(json.data.children[0]);
-    for (let count = 0; count < json.data.children.length; count++) {
-        let score = json.data.children[count].data.score;
-        let age = convertDate(json.data.children[count].data.created);
-        let author = json.data.children[count].data.author;
-        let commentNumber = json.data.children[count].data.num_comments;
-        let subreddit = json.data.children[count].data.subreddit;
-        score = eval(score / 1000).toFixed(1);
-        let url = json.data.children[count].data.url;
-        let thumbNail = json.data.children[count].data.thumbnail;
-        let permalink = json.data.children[count].data.permalink;
-        let title = json.data.children[count].data.title;
-        let displayThumbNail = checkThumbNail(thumbNail);
-        let postMarkup = `
-        <div class="post">
-        <a target = "_blank" href = "https://i.reddit.com${permalink}">${title}</a> 
-        ${displayThumbNail ? `<a href=${url} target="blank"><img alt="thumbnail" class="thumbnail" src="${thumbNail}"</a>`: '<!--Nothing to see here, move along folks.-->'}
-        </a>
-        <span class="info"> ${score}k points submitted ${age} hours ago by <a target="_blank" href="https://i.reddit.com/u/${author}">${author}</a> to <a target="_blank" href="https://i.reddit.com/r/${subreddit}">/r/${subreddit}</a></span>
-        <a target="_blank" class="comments" href="#${permalink}">${commentNumber}</a>
-        </div>
-        `;
-
-        feed.innerHTML += postMarkup;
-    }
-    after = json.data.after;
-    addButton();
-}
-const checkThumbNail = (thumbNail) => {
-    if (thumbNail !== 'self' && thumbNail !== 'image' && thumbNail !== 'default' && thumbNail !== 'spoiler' && thumbNail !== 'nsfw') {
-        return true;
-    } else {
-        return false;
-    }
-}
+const $ = document.querySelector.bind(document);
+const BUTTON = $('.load_more'); //Take that, jQuery!
+const feed = $('.feed');
 let count = 0;
-const addButton = () => { //Arrow functions are fun!
-    if (pageCount > 1) {
-        feed.removeChild(document.querySelector('.loadMore'));
-    }
-    let button = document.createElement('button');
-    button.className = 'loadMore';
-    button.textContent = 'Load More';
-    button.addEventListener('click', loadMore);
-    feed.appendChild(button);
+
+function get(url) {
+    fetch(url)
+        .then(response => response.json())
+        .then(data => main(data)); //Because I can't figure out how promises work.
 }
 
-const loadMore = () => {
-    pageCount++;
-    count += 25;
-    let url = `
-            https://api.reddit.com/r/all?count=+${count}'&after=${after}`
-    console.log(url);
-    fetch(url)
-        .then((resp) => resp.json()) // Jesus Christ, it's Json Bourne!
-        .then(data => renderFeed(data));
+
+
+function main(data) {
+    feed.innerHTML = '';
+    let posts = data.data.children;
+    for (posts of posts) {
+        const markup = createMarkup(posts);
+        feed.innerHTML += markup;
+    }
+    BUTTON.addEventListener("click", loadMore, {
+        once: true
+    });
+
+    function loadMore() {
+        count += 25;
+        console.log("clicked!");
+        let url = `https://api.reddit.com/r/popular?count=+${count}&after=${
+					data.data.after
+				}`;
+        get(url);
+    }
 }
-const convertDate = (created) => {
-    //console.log(timestamp);
+
+function createMarkup(posts) {
+    const title = renderTitle(posts);
+    const markup = `
+<div class="post">
+${title}
+            <div class="info"> <a target="_blank" href="https://i.reddit.com${posts.data.permalink}">${posts.data.num_comments} comments</a>  <a
+                    target="_blank" href="https://i.reddit.com/u/${posts.data.author}">${posts.data.author}</a>  ${convertDate(posts.data.created)} hours ago  <a
+            
+                    href="#/r/${posts.data.subreddit}">/r/${posts.data.subreddit}</a></div>
+            <span class="comments">${posts.data.score} points</span>
+        </div>
+`;
+    return markup;
+}
+
+function renderTitle(posts) {
+    if (posts.data.is_self === false) {
+        const markup = `<a target="_blank"
+                href="${posts.data.url}">${posts.data.title}</a> (${posts.data.domain})`;
+        return markup;
+    } else {
+        const markup = `<a target="_blank" href="https://i.reddit.com${posts.data.permalink}">${posts.data.title}</a> (self)`;
+        return markup;
+    }
+}
+
+function convertDate(created) {
     let current = Math.floor(Date.now() / 1000);
     created = eval(current - created);
     created = eval(created / 3600);
     created = Math.floor(created);
     return created;
 }
-convertDate();
+window.addEventListener('load', route);
+window.addEventListener('hashchange', route);
 
-//Plans: first, use the fetch API w/ arrow functions. Then, use a combination of ES6 Template Literals, += .innerHTML, and some CSS, to add new feed items. Add a button at the bottom to load more feed items. On click, change it to a pagecount indicator and add another button on the bottom. Figure out routing and SPA functionality later.
 
-// Listen on page load:
-fetch('https://api.reddit.com/r/SCPDeclassified/comments/b82xbx/scpowo1_sd_locke_when_day_bweaks/.json')
-    .then(response => response.json)
-    .then(data => console.log(data))
-
-function renderPost(data) {
-    console.log(data)
+function route() {
+    if (window.location.hash !== '') {
+        let url = window.location.hash.split('#');
+        console.log(url[1]);
+        url = `https://api.reddit.com${url[1]}/`;
+        console.log(url);
+        get(url);
+    } else {
+        window.location.hash = '/r/popular';
+        route();
+    }
 }
