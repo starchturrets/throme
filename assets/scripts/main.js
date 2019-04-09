@@ -69,7 +69,6 @@ function convertDate(created) {
 window.addEventListener('load', route);
 window.addEventListener('hashchange', route);
 
-
 function route() {
     if (window.location.hash !== '') {
         let url = window.location.hash.split('#');
