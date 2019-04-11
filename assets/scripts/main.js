@@ -10,9 +10,8 @@ function get(url) {
         .then(data => main(data)); //Because I can't figure out how promises work.
 }
 
-
-
 function main(data) {
+
     feed.innerHTML = '';
     let posts = data.data.children;
     for (posts of posts) {
@@ -35,16 +34,14 @@ function main(data) {
 
 function createMarkup(posts) {
     const title = renderTitle(posts);
-    const markup = `
-<div class="post">
+    const markup = `<div class="post">
 ${title}
             <div class="info"> <a target="_blank" href="https://i.reddit.com${posts.data.permalink}">${posts.data.num_comments} comments</a>  <a
                     target="_blank" href="https://i.reddit.com/u/${posts.data.author}">${posts.data.author}</a>  ${convertDate(posts.data.created)} hours ago  <a
             
                     href="#/r/${posts.data.subreddit}">/r/${posts.data.subreddit}</a></div>
             <span class="comments">${posts.data.score} points</span>
-        </div>
-`;
+        </div>`;
     return markup;
 }
 
